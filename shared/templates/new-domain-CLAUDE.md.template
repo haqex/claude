@@ -1,0 +1,13 @@
+# {{DOMAIN_NAME}} — Claude Code Project Instructions
+
+## Overview
+<!-- Describe the target project this domain supports -->
+
+## Skills Available
+<!-- List skills as they are added under .claude/skills/ -->
+
+## Conventions
+<!-- Project-specific conventions, naming, folder structure -->
+
+## Do NOT
+<!-- List guardrails and prohibited actions -->
