@@ -23,6 +23,9 @@ steps:
     args: "<argument string>"     # passed as $ARGUMENTS to the skill; supports {{}} interpolation
     after: [<step-id>, ...]       # optional: step IDs this step depends on (for ordering/clarity)
     on_error: stop | skip | ask   # optional: what to do if this step fails (default: stop)
+    outputs:                      # optional: files this step is expected to produce
+      - path: "<glob or exact path>"
+        description: "<what it is>"
 ---
 ```
 

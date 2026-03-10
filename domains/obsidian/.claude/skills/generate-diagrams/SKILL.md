@@ -55,8 +55,13 @@ Determine which diagram types are applicable:
    - **Mind map** (system/topic breakdown)
 3. Write to the relevant project folder as `{Topic} - Diagrams.md`
 
-### Step 5: Summary
-After generating, list all created files with descriptions.
+### Step 5: Verify and summarize
+After generating, confirm each file was written and list them:
+- Check that the Excalidraw file exists at the expected path
+- Check that the Canvas file exists at the expected path
+- Check that the Mermaid file exists at the expected path
+- If any file is missing, flag it explicitly: "⚠ Excalidraw not generated — reason: <why>"
+- Do NOT report a format as complete if it was skipped
 
 ## Quality Standards
 - Every shape must have a label
@@ -66,3 +71,10 @@ After generating, list all created files with descriptions.
 - Canvas: include group nodes for logical layers
 - Mermaid: add section headers and descriptions between diagrams
 - Include a title element in every diagram
+
+## Output Checklist (required before marking complete)
+- [ ] Excalidraw: `Excalidraw/<Topic> - System Design.excalidraw.md` written and verified
+- [ ] Canvas: `Excalidraw/<Topic> - Component Map.canvas` written and verified
+- [ ] Mermaid: `Excalidraw/<Topic> - Diagrams.md` written and verified
+- [ ] If any format was skipped, the reason is stated explicitly in the summary
+- [ ] lzstring available (`pip3 install lzstring`) before attempting Excalidraw — if not installable, flag it rather than silently skipping

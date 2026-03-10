@@ -70,17 +70,27 @@ For each step in the pipeline `steps` array:
 - You are the runtime — do not just describe what the skill would do, actually do it
 - Track what was produced: files written, paths created, key values extracted (topic, title, skill name, etc.)
 
-**d. Record step outputs**
+**d. Verify declared outputs**
+- If the step has an `outputs` list, check each declared path actually exists using Glob or Bash after execution
+- For each output:
+  - Found → mark ✓
+  - Not found → mark ✗ and note it
+- If any declared output is missing, the step is `⚠ partial` — not `✓ success`
+- A step with no `outputs` declared is judged complete by execution alone
+
+**e. Record step outputs**
 - After each step completes, note its outputs in a step context object:
   ```
   Step <id> complete:
-    - produced: <what was created>
+    - produced: <what was actually created (verified)>
+    - missing: <any declared outputs not found>
     - key outputs: <any named values subsequent steps may need>
   ```
 - These outputs are available to subsequent steps as `{{<id>.<field>}}`
 
-**e. Status line**
+**f. Status line**
 - Output after each step: `✓ Step <N> (<id>) — <one-line summary of what was done>`
+- If declared outputs were missing: `⚠ Step <N> (<id>) — partial: <what was missing>`
 - If a step fails: `✗ Step <N> (<id>) — <error>` then decide based on `on_error`:
   - `stop` (default): halt the pipeline and report
   - `skip`: log and continue to next step
@@ -105,11 +115,12 @@ steps_failed: <N>
 
 ## Status: ✓ / ⚠ / ✗ (<N>/<total> steps)
 
-| Step | Skill | Status | Notes |
-|------|-------|--------|-------|
-| <id> | <domain>/<skill> | ✓ success | <what was done> |
-| <id> | <domain>/<skill> | ⚠ skipped | <reason> |
-| <id> | <domain>/<skill> | ✗ failed | <error> |
+| Step | Skill | Status | Expected | Actual |
+|------|-------|--------|----------|--------|
+| <id> | <domain>/<skill> | ✓ success | <N> outputs | <N> produced |
+| <id> | <domain>/<skill> | ⚠ partial | <N> outputs | <M> produced — missing: <paths> |
+| <id> | <domain>/<skill> | ⚠ skipped | — | — |
+| <id> | <domain>/<skill> | ✗ failed | <N> outputs | 0 produced |
 
 ## Vault Artifacts Created
 - `<path>` — <what it is>
@@ -127,7 +138,7 @@ steps_failed: <N>
 To apply: `/project:approve-proposal <filename>`
 ```
 
-- Set `status: partial` if any steps were skipped, `failed` if any step hard-stopped the pipeline
+- Set `status: partial` if any steps were skipped OR any declared outputs were missing, `failed` if any step hard-stopped the pipeline
 - The **Learning Outcomes** section should be substantive — extracted from actual content, not just a summary of what files were made
 - If no proposals were generated, omit the **Proposed Repo Changes** section entirely
 
@@ -147,6 +158,8 @@ Outcome report: outcomes/<filename>.md
 - [ ] All required inputs were validated before execution
 - [ ] Plan was printed before any execution began
 - [ ] Each step was fully executed, not summarized
+- [ ] Declared outputs were verified with Glob/Bash after each step
+- [ ] Steps with missing outputs are marked ⚠ partial, not ✓ success
 - [ ] Step outputs were tracked and passed to dependent steps
 - [ ] Outcomes file written with substantive Learning Outcomes section
 - [ ] Proposals linked from outcomes file if any were generated
