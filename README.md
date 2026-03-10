@@ -6,7 +6,9 @@ Centralized, version-controlled Claude Code skills, rules, and reference docs. O
 
 | Domain | Description | Skills |
 |--------|-------------|--------|
-| [obsidian](domains/obsidian/) | Obsidian vault diagramming | `generate-diagrams`, `generate-excalidraw`, `generate-canvas`, `generate-mermaid` |
+| [obsidian](domains/obsidian/) | Obsidian vault management | `generate-diagrams`, `create-note`, `manage-vault`, `workflow`, +8 more |
+| [learn](domains/learn/) | Knowledge ingestion pipelines | `youtube-to-skill` |
+| [core](domains/core/) | Meta-skills and pipeline runner | `run-pipeline` |
 
 ## Quick Start
 
@@ -44,12 +46,25 @@ Scaffolds the standard directory structure under `domains/code-review/`.
 ├── CLAUDE.md                    # Repo instructions (loaded by Claude Code)
 ├── README.md                    # This file
 ├── domains/
-│   └── obsidian/                # Obsidian diagramming domain
-│       ├── CLAUDE.md            # Deployable project instructions
-│       ├── README.md            # Domain documentation
+│   ├── obsidian/                # Obsidian vault management
+│   │   ├── CLAUDE.md            # Deployable project instructions
+│   │   ├── README.md            # Domain documentation
+│   │   └── .claude/
+│   │       ├── rules/           # Auto-trigger rules
+│   │       └── skills/          # Invokable skills
+│   ├── learn/                   # Knowledge ingestion pipelines
+│   │   ├── CLAUDE.md
+│   │   ├── README.md
+│   │   └── .claude/
+│   │       └── skills/          # youtube-to-skill, ...
+│   └── core/                    # Meta-skills (pipeline runner)
+│       ├── CLAUDE.md
+│       ├── README.md
 │       └── .claude/
-│           ├── rules/           # Auto-trigger rules
-│           └── skills/          # Invokable skills
+│           └── skills/          # run-pipeline
+├── pipelines/                   # Pipeline definitions
+│   ├── PIPELINE-FORMAT.md       # Schema reference
+│   └── youtube-research.md      # Example pipeline
 ├── shared/
 │   └── templates/               # Starter templates for new domains
 └── scripts/

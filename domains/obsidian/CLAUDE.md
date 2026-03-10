@@ -57,6 +57,9 @@ When creating or editing ANY note:
 - `/project:manage-vault <operation>` — audit, standardize, fix links
 - `/project:organize-vault <operation>` — cleanup, naming, orphans, images
 
+### Orchestration
+- `/project:workflow <goal>` — plan and execute a multi-skill workflow from a high-level goal
+
 ## Plugins Available
 obsidian-excalidraw-plugin, obsidian-git, calendar, dataview, make-md, obsidian-icon-folder, obsidian-annotator, image-converter, symbols-prettifier
 

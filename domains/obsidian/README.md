@@ -27,6 +27,11 @@ Complete Obsidian vault management — diagram generation, structured notes, fro
 | manage-vault | `/project:manage-vault <op>` | Audit, standardize frontmatter, build tags, fix links |
 | organize-vault | `/project:organize-vault <op>` | Fix naming, find orphans, clean images, restructure |
 
+### Orchestration
+| Skill | Command | Description |
+|-------|---------|-------------|
+| workflow | `/project:workflow <goal>` | Plan and execute a multi-skill workflow from a high-level goal |
+
 ## Rules
 
 | Rule | Triggers on |
