@@ -8,7 +8,7 @@ Centralized, version-controlled Claude Code skills, rules, and reference docs. O
 |--------|-------------|--------|
 | [obsidian](domains/obsidian/) | Obsidian vault management | `generate-diagrams`, `create-note`, `manage-vault`, `workflow`, +8 more |
 | [learn](domains/learn/) | Knowledge ingestion pipelines | `youtube-to-skill` |
-| [core](domains/core/) | Meta-skills and pipeline runner | `run-pipeline` |
+| [core](domains/core/) | Meta-skills and pipeline runner | `run-pipeline`, `approve-proposal` |
 
 ## Quick Start
 
@@ -61,10 +61,12 @@ Scaffolds the standard directory structure under `domains/code-review/`.
 │       ├── CLAUDE.md
 │       ├── README.md
 │       └── .claude/
-│           └── skills/          # run-pipeline
+│           └── skills/          # run-pipeline, approve-proposal
 ├── pipelines/                   # Pipeline definitions
 │   ├── PIPELINE-FORMAT.md       # Schema reference
 │   └── youtube-research.md      # Example pipeline
+├── outcomes/                    # Post-run pipeline reports (auto-generated)
+├── proposals/                   # Pending repo changes awaiting approval
 ├── shared/
 │   └── templates/               # Starter templates for new domains
 └── scripts/

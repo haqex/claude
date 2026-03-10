@@ -7,6 +7,7 @@ Meta-skills for orchestrating other skills and pipelines across all domains.
 | Skill | Command | Description |
 |-------|---------|-------------|
 | run-pipeline | `/project:run-pipeline <name> [key=value ...]` | Execute a named pipeline from `pipelines/` |
+| approve-proposal | `/project:approve-proposal <filename>` | Apply a pending proposal from `proposals/` to the repo |
 
 ## Usage
 

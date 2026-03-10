@@ -86,24 +86,61 @@ For each step in the pipeline `steps` array:
   - `skip`: log and continue to next step
   - `ask`: pause and prompt the user
 
-### 6. Pipeline summary
-After all steps complete:
+### 6. Write the outcomes file
+After all steps complete, write `outcomes/YYYY-MM-DD-<pipeline-name>-<slug>.md` where `<slug>` is a short kebab-case identifier derived from the primary input (e.g. video title, topic name).
+
+```markdown
+---
+pipeline: <pipeline-name>
+date: <YYYY-MM-DD>
+status: success | partial | failed
+inputs:
+  <key>: <value>
+steps_run: <N>
+steps_succeeded: <N>
+steps_failed: <N>
+---
+
+# Pipeline Outcome: <pipeline-name> — <primary input or title>
+
+## Status: ✓ / ⚠ / ✗ (<N>/<total> steps)
+
+| Step | Skill | Status | Notes |
+|------|-------|--------|-------|
+| <id> | <domain>/<skill> | ✓ success | <what was done> |
+| <id> | <domain>/<skill> | ⚠ skipped | <reason> |
+| <id> | <domain>/<skill> | ✗ failed | <error> |
+
+## Vault Artifacts Created
+- `<path>` — <what it is>
+
+## Learning Outcomes
+<!-- Key insights, concepts, or techniques extracted from the content.
+     Dense. What would someone need to know after encountering this material? -->
+- <insight>
+- <insight>
+
+## Proposed Repo Changes
+<!-- List any proposals written to proposals/. Empty if none. -->
+- `proposals/<filename>.md` — <what it proposes>
+
+To apply: `/project:approve-proposal <filename>`
+```
+
+- Set `status: partial` if any steps were skipped, `failed` if any step hard-stopped the pipeline
+- The **Learning Outcomes** section should be substantive — extracted from actual content, not just a summary of what files were made
+- If no proposals were generated, omit the **Proposed Repo Changes** section entirely
+
+### 7. Print the final summary to chat
 ```
 ## Pipeline Complete: <name>
 
-Steps run: <N>/<total>
+Steps: <N>/<total> succeeded
 
-Outputs:
-  - <step-id>: <what was produced>
-  ...
+Vault artifacts: <count> files
+Proposals: <count> pending (or "none")
 
-Files created or modified:
-  - <path>
-  ...
-
-To use a generated skill:
-  claude --add-dir ~/developer/enterprise/claude/domains/<domain>
-  /project:<skill-name>
+Outcome report: outcomes/<filename>.md
 ```
 
 ## Quality Checklist
@@ -111,4 +148,5 @@ To use a generated skill:
 - [ ] Plan was printed before any execution began
 - [ ] Each step was fully executed, not summarized
 - [ ] Step outputs were tracked and passed to dependent steps
-- [ ] Final summary lists every file created or modified
+- [ ] Outcomes file written with substantive Learning Outcomes section
+- [ ] Proposals linked from outcomes file if any were generated

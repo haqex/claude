@@ -1,6 +1,6 @@
 ---
 name: youtube-to-skill
-description: Ingest a YouTube video — fetches the transcript, writes a concise vault note, then generates a reusable SKILL.md capturing the how-to knowledge from the video
+description: Ingest a YouTube video — fetches the transcript, writes a concise vault note, then writes a proposal for a reusable SKILL.md capturing the how-to knowledge from the video
 argument-hint: <youtube-url> [output-domain]
 allowed-tools: [Read, Write, Edit, Glob, Grep, WebFetch]
 ---
@@ -64,7 +64,7 @@ channel: <channel-name>
 > [<Video Title>](<youtube-url>) by <Channel Name>
 
 ## Summary
-<!-- 3–5 sentence summary. Dense. No filler. What does this video teach and why does it matter? -->
+<!-- 3-5 sentence summary. Dense. No filler. What does this video teach and why does it matter? -->
 
 ## Key Concepts
 <!-- Bullet list of terms/ideas needed to understand the content -->
@@ -79,54 +79,52 @@ channel: <channel-name>
 <!-- Any commands, config snippets, or code shown in the video -->
 
 ## Takeaways
-<!-- 2–4 bullets: what to remember or apply -->
+<!-- 2-4 bullets: what to remember or apply -->
 
 ## Generated Skill
-<!-- Link to the skill generated from this video, if applicable -->
-[[<skill-name>]]
+<!-- Filled in at step 7 -->
 ```
 
-### 6. Generate the skill
-Determine the skill name: kebab-case of the core procedure (e.g. `playwright-claude-code-setup`, `langchain-rag-pipeline`).
+### 6. Write the skill proposal
+If the video is purely conceptual (no clear procedure), skip this step and note in the vault note under `## Generated Skill`: "No procedural skill generated — concept reference only."
 
-Determine output path:
-- If `output-domain` was specified: `domains/<output-domain>/.claude/skills/<skill-name>/SKILL.md`
-- Default: `domains/learn/.claude/skills/<skill-name>/SKILL.md`
+Otherwise:
+- Determine the skill name: kebab-case of the core procedure (e.g. `playwright-claude-code-setup`)
+- Determine the target domain: `output-domain` argument if provided, otherwise `learn`
+- Write a proposal to `proposals/YYYY-MM-DD-<skill-name>.md` — do NOT write directly to `domains/`
 
-Write the SKILL.md using the knowledge extracted from the video:
+**Proposal format:**
 
-```markdown
----
-name: <skill-name>
-description: <one-line description of what this skill does — sourced from the video>
-argument-hint: <argument syntax>
-allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
----
-
-# <Skill Title>: $ARGUMENTS
-
-> [!NOTE] Source
-> Learned from: [<Video Title>](<youtube-url>)
-
-## Prerequisites
-<!-- What must be true before running this skill -->
-
-## Steps
-<!-- Extracted from the video — concrete, numbered, actionable -->
-1. ...
-2. ...
-
-## Reference
-<!-- Commands, config, snippets from the video -->
-
-## Notes
-<!-- Edge cases, gotchas, or tips mentioned in the video -->
 ```
+---
+type: new-skill
+proposed: <YYYY-MM-DD>
+source: <youtube-url>
+target_domain: <domain>
+skill_name: <skill-name>
+target_path: domains/<domain>/.claude/skills/<skill-name>/SKILL.md
+status: pending
+---
 
-If the video is purely conceptual (no clear procedure), skip the SKILL.md and note that in the vault note under `## Generated Skill`: "No procedural skill generated — concept reference only."
+# Proposal: New Skill — <skill-name>
+
+> Source: [<Video Title>](<youtube-url>) by <Channel Name>
+
+## What this adds
+A new skill at `domains/<domain>/.claude/skills/<skill-name>/SKILL.md`
+
+## Proposed SKILL.md
+
+(full SKILL.md content here, fenced as a code block)
+
+## To apply
+/project:approve-proposal <YYYY-MM-DD-skill-name>
+```
 
 ### 7. Update the vault note
-Go back to the vault note and fill in the `## Generated Skill` section with a wikilink to the generated skill name.
+Go back to the vault note and fill in the `## Generated Skill` section:
+- If a proposal was written: "Pending approval — see `proposals/YYYY-MM-DD-<skill-name>.md`"
+- If concept-only: "No procedural skill generated — concept reference only."
 
 ### 8. Report output
 ```
@@ -136,17 +134,16 @@ Video: <title>
 Channel: <channel>
 
 Vault note: GitHub/University/YouTube/<Slugified Title>.md
-Generated skill: domains/<output-domain>/.claude/skills/<skill-name>/SKILL.md
+Skill proposal: proposals/<YYYY-MM-DD-skill-name>.md (pending approval)
 
-To use the skill:
-  claude --add-dir ~/developer/enterprise/claude/domains/<output-domain>
-  /project:<skill-name>
+To apply the proposal:
+  /project:approve-proposal <YYYY-MM-DD-skill-name>
 ```
 
 ## Quality Checklist
 - [ ] Transcript was fetched (not just description)
 - [ ] Vault note is dense — no padding, no filler phrases
-- [ ] Skill steps are actionable and derived from actual video content
-- [ ] Skill frontmatter is valid with correct `name`, `description`, `argument-hint`
-- [ ] Output paths are correct and files were written
-- [ ] Vault note links to the generated skill
+- [ ] Proposal written to proposals/ — NOT directly to domains/
+- [ ] Proposal frontmatter has correct target_path and status: pending
+- [ ] Proposed skill steps are actionable and derived from actual video content
+- [ ] Vault note references the proposal

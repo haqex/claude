@@ -7,6 +7,7 @@ Meta-skills for orchestrating other skills and pipelines. Domain-agnostic — wo
 ## Skills Available
 
 - `/project:run-pipeline <name> [key=value ...]` — execute a named pipeline from `pipelines/`
+- `/project:approve-proposal <filename>` — apply a pending proposal from `proposals/` to the repo
 
 ## Repo Path
 
