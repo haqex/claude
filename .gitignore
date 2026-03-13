@@ -1,15 +1,3 @@
-# Claude Code local settings (machine-specific permissions)
-.claude/settings.local.json
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-
-# macOS
+node_modules/
 .DS_Store
-
-# Editor
-*.swp
-*.swo
-*~
+*.log

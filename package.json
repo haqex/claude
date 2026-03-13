@@ -1,0 +1,24 @@
+{
+  "name": "@haqex/claude",
+  "version": "1.0.0",
+  "description": "Drop-in Claude Code bundles — install production-grade AI skills into any project in one command",
+  "keywords": ["claude", "claude-code", "ai", "skills", "llm"],
+  "author": "haqex",
+  "license": "MIT",
+  "bin": {
+    "haqex": "./bin/haqex.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "bundles/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haqex/claude.git"
+  },
+  "homepage": "https://github.com/haqex/claude#readme"
+}

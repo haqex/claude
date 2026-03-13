@@ -1,84 +1,66 @@
-# claude
+# haqex/claude
 
-Centralized, version-controlled Claude Code skills, rules, and reference docs. Organized by domain for easy deployment to any project.
+Drop-in Claude Code bundles. Install production-grade AI skills into any project in one command — no config, no setup, no `.claude/` copying required.
 
-## Domains
-
-| Domain | Description | Skills |
-|--------|-------------|--------|
-| [obsidian](domains/obsidian/) | Obsidian vault management | `generate-diagrams`, `create-note`, `manage-vault`, `workflow`, +8 more |
-| [learn](domains/learn/) | Knowledge ingestion pipelines | `youtube-to-skill` |
-| [core](domains/core/) | Meta-skills and pipeline runner | `run-pipeline`, `approve-proposal` |
-
-## Quick Start
-
-### Use with `--add-dir`
-
-Load a domain's skills into any Claude Code session:
+## Usage
 
 ```bash
-claude --add-dir ~/developer/enterprise/claude/domains/obsidian
+npx @haqex/claude
 ```
 
-All skills and rules from the domain are immediately available.
-
-### Use with symlinks
-
-Deploy a domain permanently into a project:
+Interactive menu — pick which bundle(s) to install.
 
 ```bash
-./scripts/deploy.sh obsidian ~/Documents/Obsidian\ Vault
+npx @haqex/claude frontend
+npx @haqex/claude learn
+npx @haqex/claude frontend learn
 ```
 
-This symlinks `.claude/skills/` and `.claude/rules/` from the repo into the target project.
+Install specific bundles directly.
 
-### Create a new domain
+## What happens
+
+1. Selected bundle(s) are copied into `./haqex/<bundle-name>/` in your project
+2. The activation prompt is printed — paste it to Claude and you're done
+
+## Bundles
+
+| Bundle | Skills | What It Does |
+|--------|--------|-------------|
+| `frontend` | impeccable-design, audit, polish, normalize, critique | Production frontend design — distinctive UI, accessibility, anti-AI-slop |
+| `learn` | youtube-to-skill, build-scroll-animation, generate-scroll-frames, generate-transition-video | YouTube knowledge capture + 3D scroll animation pipeline |
+| `core` | run-pipeline, approve-proposal | Pipeline orchestration |
+
+> Every bundle includes `run-pipeline` — no separate core install needed.
+
+## Activation
+
+After install, Claude prints a prompt like:
+
+```
+I've added the frontend bundle to this project at `./haqex/frontend`.
+Read `./haqex/frontend/BUNDLE.md` to load all skills and rules.
+Use `./haqex/frontend` as the bundle root for all skill and pipeline lookups.
+```
+
+Paste that to Claude. It reads the bundle and all skills are immediately available.
+
+## Example session
 
 ```bash
-./scripts/new-domain.sh code-review
+$ npx @haqex/claude frontend
+
+  ✓ Installed frontend → ./haqex/frontend
+
+  Activate with Claude:
+  ────────────────────────────────────────────────────────────
+  I've added the frontend bundle to this project at `./haqex/frontend`.
+  Read `./haqex/frontend/BUNDLE.md` to load all skills and rules.
+  Use `./haqex/frontend` as the bundle root for all skill and pipeline lookups.
+  ────────────────────────────────────────────────────────────
 ```
 
-Scaffolds the standard directory structure under `domains/code-review/`.
-
-## Repository Structure
-
+Then in Claude:
 ```
-├── CLAUDE.md                    # Repo instructions (loaded by Claude Code)
-├── README.md                    # This file
-├── domains/
-│   ├── obsidian/                # Obsidian vault management
-│   │   ├── CLAUDE.md            # Deployable project instructions
-│   │   ├── README.md            # Domain documentation
-│   │   └── .claude/
-│   │       ├── rules/           # Auto-trigger rules
-│   │       └── skills/          # Invokable skills
-│   ├── learn/                   # Knowledge ingestion pipelines
-│   │   ├── CLAUDE.md
-│   │   ├── README.md
-│   │   └── .claude/
-│   │       └── skills/          # youtube-to-skill, ...
-│   └── core/                    # Meta-skills (pipeline runner)
-│       ├── CLAUDE.md
-│       ├── README.md
-│       └── .claude/
-│           └── skills/          # run-pipeline, approve-proposal
-├── pipelines/                   # Pipeline definitions
-│   ├── PIPELINE-FORMAT.md       # Schema reference
-│   └── youtube-research.md      # Example pipeline
-├── outcomes/                    # Post-run pipeline reports (auto-generated)
-├── proposals/                   # Pending repo changes awaiting approval
-├── shared/
-│   └── templates/               # Starter templates for new domains
-└── scripts/
-    ├── deploy.sh                # Deploy a domain to a target project
-    └── new-domain.sh            # Scaffold a new domain
+run-pipeline frontend-build target="a pricing page"
 ```
-
-## Skill Convention
-
-Each skill directory contains:
-- `SKILL.md` — Main instructions with frontmatter (required)
-- Reference docs — Format specs, color palettes, etc.
-- `scripts/` — Utility scripts Claude can execute during the skill
-
-Skills are invoked via `/project:<skill-name> <arguments>`.
