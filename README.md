@@ -1,4 +1,4 @@
-# haqex/claude
+# @haqex/claude
 
 Drop-in Claude Code bundles. Install production-grade AI skills into any project in one command — no config, no setup, no `.claude/` copying required.
 
