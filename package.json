@@ -1,5 +1,5 @@
 {
-  "name": "haqex-claude",
+  "name": "@haqex/claude",
   "version": "1.0.0",
   "description": "Drop-in Claude Code bundles — install production-grade AI skills into any project in one command",
   "keywords": ["claude", "claude-code", "ai", "skills", "llm"],
