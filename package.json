@@ -26,5 +26,8 @@
     "type": "git",
     "url": "https://github.com/haqex/claude.git"
   },
-  "homepage": "https://github.com/haqex/claude#readme"
+  "homepage": "https://github.com/haqex/claude#readme",
+  "dependencies": {
+    "figlet": "^1.11.0"
+  }
 }

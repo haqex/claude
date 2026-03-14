@@ -4,6 +4,7 @@ const readline = require('readline');
 const path = require('path');
 const BUNDLES = require('../src/registry');
 const { installBundle, activationPrompt } = require('../src/install');
+const { runInit, printBanner } = require('../src/init');
 
 const BUNDLE_NAMES = Object.keys(BUNDLES);
 
@@ -19,9 +20,7 @@ const c = {
 };
 
 function printHeader() {
-  console.log('');
-  console.log(c.bold('  haqex') + c.dim(' — Claude Code bundles'));
-  console.log('');
+  printBanner();
 }
 
 function printBundleList() {
@@ -130,13 +129,18 @@ async function runInteractive() {
 
 // ─── Entry ──────────────────────────────────────────────────────────────────
 
-printHeader();
-
 const args = process.argv.slice(2).filter((a) => !a.startsWith('-'));
 
-if (args.length > 0) {
+if (args[0] === 'init') {
+  runInit().catch((err) => {
+    console.error(c.red('  Error: ') + err.message);
+    process.exit(1);
+  });
+} else if (args.length > 0) {
+  printHeader();
   runInstall(args.map((a) => a.toLowerCase()));
 } else {
+  printHeader();
   runInteractive().catch((err) => {
     console.error(c.red('  Error: ') + err.message);
     process.exit(1);

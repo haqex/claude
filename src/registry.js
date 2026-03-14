@@ -13,6 +13,13 @@ const BUNDLES = {
     pipeline: 'youtube-research',
     example: 'run-pipeline youtube-research url=https://youtube.com/watch?v=...',
   },
+  sdlc: {
+    name: 'sdlc',
+    description: 'Full dev lifecycle — spec, plan, scaffold, build, test, audit, ship with checklists',
+    skills: ['run-pipeline', 'spec', 'plan', 'scaffold', 'build', 'test', 'audit', 'ship', 'check'],
+    pipeline: 'sdlc',
+    example: 'run-pipeline sdlc goal="build a SaaS dashboard with auth and billing"',
+  },
   core: {
     name: 'core',
     description: 'Pipeline orchestration — run-pipeline and approve-proposal',
