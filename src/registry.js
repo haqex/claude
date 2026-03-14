@@ -20,6 +20,13 @@ const BUNDLES = {
     pipeline: 'sdlc',
     example: 'run-pipeline sdlc goal="build a SaaS dashboard with auth and billing"',
   },
+  uiux: {
+    name: 'uiux',
+    description: 'UI/UX design intelligence — 67 styles, 161 colors, 57 fonts, 99 UX rules, design system pipeline',
+    skills: ['run-pipeline', 'design', 'review', 'design-system', 'brand', 'ui-styling'],
+    pipeline: 'design-system',
+    example: 'run-pipeline design-system product="fintech SaaS dashboard" stack="Next.js, Tailwind"',
+  },
   core: {
     name: 'core',
     description: 'Pipeline orchestration — run-pipeline and approve-proposal',
