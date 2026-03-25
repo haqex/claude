@@ -1,6 +1,6 @@
 # Infrastructure
 
-Configuration and setup for Vercel, Supabase, and GitHub — the three pillars of the infrastructure layer.
+Configuration and setup for Vercel, Cloudflare, Supabase, and GitHub — the four pillars of the infrastructure layer.
 
 ---
 
@@ -248,14 +248,48 @@ require_linear_history: true  # squash merge enforced
 
 ---
 
-## DNS & Domain Architecture
+## Cloudflare
+
+Cloudflare is the DNS and security layer sitting in front of all public-facing infrastructure.
+
+### DNS Zone Configuration
+
+All DNS is managed in Cloudflare. Vercel-facing records are proxied (orange cloud) for DDoS and WAF protection. Supabase-facing records are DNS-only (gray cloud) since Supabase manages its own edge.
 
 ```
-example.com              → Marketing site (Vercel)
-app.example.com          → Application (Vercel Production)
-api.example.com          → Supabase REST API (CNAME to supabase)
-auth.example.com         → Supabase Auth (custom domain)
-staging.example.com      → Staging (Vercel Preview)
+example.com         CNAME  cname.vercel-dns.com       (Proxied)
+app.example.com     CNAME  cname.vercel-dns.com       (Proxied)
+staging.example.com CNAME  cname.vercel-dns.com       (Proxied)
+api.example.com     CNAME  <ref>.supabase.co           (DNS only)
+auth.example.com    CNAME  <ref>.supabase.co           (DNS only)
 ```
 
-All domains enforce HTTPS via automatic certificate provisioning (Vercel + Supabase).
+### SSL/TLS
+
+- SSL mode: **Full (Strict)** — Cloudflare validates Vercel's origin certificate
+- Minimum TLS version: 1.2
+- Automatic HTTPS Rewrites: enabled
+- Always Use HTTPS: enabled
+- HSTS: enabled via Vercel response headers (not Cloudflare, to avoid double-setting)
+
+### Security Rules
+
+- **Bot Fight Mode:** enabled on production domains
+- **WAF Managed Rules:** OWASP Core Ruleset enabled
+- **Rate Limiting:** 20 req/10s on `/auth/*` paths per IP
+- **Under Attack Mode:** available for emergency DDoS events (manual toggle)
+
+### Vercel + Cloudflare Interop
+
+When Cloudflare proxies to Vercel:
+- Real client IP is in `CF-Connecting-IP` header (not `X-Forwarded-For`)
+- Vercel must be configured to trust Cloudflare's proxy IPs
+- Set `VERCEL_FORCE_NO_BUILD_CACHE` if stale deploys appear after DNS changes
+
+### Page Rules
+
+| URL Pattern | Action |
+|-------------|--------|
+| `example.com/blog/*` | Cache Level: Standard, Edge TTL: 4hr |
+| `app.example.com/api/*` | Cache Level: Bypass |
+| `*example.com/.well-known/*` | Cache Level: Bypass, SSL: Full |

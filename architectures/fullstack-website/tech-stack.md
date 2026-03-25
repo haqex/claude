@@ -67,6 +67,60 @@ const config: NextConfig = {
 
 ---
 
+## Network & DNS: Cloudflare
+
+**What it does:** DNS management, DDoS protection, WAF (Web Application Firewall), CDN edge caching, SSL/TLS termination, and Bot Management. Sits in front of Vercel and Supabase as the DNS and security layer.
+
+**Why this:**
+- Authoritative DNS with sub-10ms global resolution — fastest public DNS infrastructure
+- DDoS mitigation at layers 3, 4, and 7 — absorbs volumetric attacks before they reach Vercel
+- WAF with managed rulesets — OWASP Core, bot detection, rate limiting at the edge
+- Proxy mode (orange cloud) — hides origin server IPs, adds security headers, caches static assets
+- Page Rules and Transform Rules — URL rewrites, redirects, and cache behavior without touching application code
+- Free tier covers DNS, basic DDoS, and SSL for most projects
+
+**Key config:**
+- Domain registered or transferred to Cloudflare (recommended) or nameservers pointed to Cloudflare
+- Proxy mode (orange cloud) enabled for all `A`/`CNAME` records pointing to Vercel
+- SSL mode: **Full (Strict)** — Cloudflare validates Vercel's origin certificate
+- Minimum TLS: 1.2, Automatic HTTPS Rewrites enabled
+- Bot Fight Mode: enabled for production domains
+
+**DNS records:**
+
+| Record | Type | Name | Target | Proxy |
+|--------|------|------|--------|-------|
+| Root | `CNAME` | `@` | `cname.vercel-dns.com` | Proxied |
+| App | `CNAME` | `app` | `cname.vercel-dns.com` | Proxied |
+| Staging | `CNAME` | `staging` | `cname.vercel-dns.com` | Proxied |
+| API | `CNAME` | `api` | `<project-ref>.supabase.co` | DNS only |
+| Auth | `CNAME` | `auth` | `<project-ref>.supabase.co` | DNS only |
+| Mail | `MX` | `@` | email provider | DNS only |
+
+**Cloudflare WAF rules:**
+```
+# Block known bad bots
+Rule: Managed Challenge if cf.bot_management.score < 30
+
+# Rate limit auth endpoints
+Rule: Block if URI path contains "/auth/" AND rate > 20 req/10s per IP
+
+# Block non-GET to marketing pages
+Rule: Block if URI path starts with "/" AND http.request.method != "GET"
+     AND NOT URI path starts with "/api" AND NOT URI path starts with "/auth"
+```
+
+**Integration points:**
+- Vercel: Cloudflare proxies traffic to Vercel origin; Vercel sees Cloudflare IPs (use `CF-Connecting-IP` header for real client IP)
+- Supabase: DNS-only (gray cloud) for API and Auth subdomains — Supabase handles its own SSL and DDoS
+- Next.js: `CF-Connecting-IP` header available in middleware for geo-aware logic and rate limiting
+- PostHog: Cloudflare Workers can proxy PostHog requests through your domain to avoid ad blockers
+
+**Cloudflare vs Vercel CDN:**
+Cloudflare handles DNS, security, and edge caching. Vercel handles application serving, ISR, and image optimization. They complement each other — Cloudflare is the shield, Vercel is the runtime.
+
+---
+
 ## Database: Supabase
 
 **What it does:** Managed PostgreSQL with built-in Auth, Storage (S3-compatible), Realtime subscriptions, Edge Functions, and auto-generated REST/GraphQL APIs.

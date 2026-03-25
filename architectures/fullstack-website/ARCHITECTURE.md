@@ -31,6 +31,7 @@ Claude will internalize the system design, data model, conventions, and workflow
 |-------|-----------|------|
 | Framework | Next.js 15 (App Router) | Server-first React with RSC, server actions, middleware |
 | Hosting | Vercel | Edge deployment, preview environments, analytics |
+| Network & DNS | Cloudflare | DNS, DDoS protection, WAF, edge caching, SSL termination |
 | Database | Supabase (PostgreSQL) | Managed Postgres, Auth, Storage, Realtime, Edge Functions |
 | UI | shadcn/ui + Tailwind CSS v4 | Accessible component library + utility-first styling |
 | Analytics | PostHog | Product analytics, feature flags, session replay |
@@ -53,6 +54,7 @@ Claude will internalize the system design, data model, conventions, and workflow
 | [security.md](security.md) | Authentication flows, RLS policies, OWASP compliance, CSP, secrets management |
 | [project-structure.md](project-structure.md) | File/folder conventions, naming patterns, colocation rules, import aliases |
 | [workflows.md](workflows.md) | GSD phase structure, PR conventions, branch strategy, code review, deploy process |
+| [service-auth.md](service-auth.md) | How every external service credential is created, stored, rotated, and consumed |
 
 ## Constraints
 
