@@ -7,7 +7,7 @@ GSD phase-driven development lifecycle, branch strategy, PR conventions, code re
 ## Development Lifecycle
 
 ```mermaid
-graph LR
+graph TB
     subgraph Init["Project Init"]
         NP["gsd:new-project\n(PROJECT.md)"]
         NM["gsd:new-milestone\n(ROADMAP.md)"]

@@ -124,7 +124,7 @@ sequenceDiagram
 ## Deployment Topology
 
 ```mermaid
-graph LR
+graph TB
     subgraph Dev["Developer Machine"]
         LC["localhost:3000\nNext.js dev server"]
         LD["localhost:54321\nSupabase local (Docker)"]

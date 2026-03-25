@@ -7,7 +7,7 @@ GitHub Actions workflows, preview deployments, release pipeline, and GSD integra
 ## Pipeline Overview
 
 ```mermaid
-graph LR
+graph TB
     subgraph Trigger["Trigger"]
         PR["Pull Request"]
         PUSH["Push to main"]

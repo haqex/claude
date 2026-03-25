@@ -9,13 +9,14 @@ Structured data flow diagrams at three levels of abstraction. Each level zooms i
 The system as a single process, showing all external entities and data flows.
 
 ```mermaid
-graph LR
+graph TB
     U((User))
     ADMIN((Admin))
-    EMAIL((Email Service))
-    OAUTH((OAuth Provider))
 
     SYS["Full-Stack Website"]
+
+    OAUTH((OAuth Provider))
+    EMAIL((Email Service))
 
     U -->|"browse, submit forms,\nupload files"| SYS
     SYS -->|"pages, data,\nnotifications"| U
